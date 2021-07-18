@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from '.././BooksAPI';
-
-const SearchBar = ({ theBookState, allBooks }) => {
+import MyContext from '../Context/MyContext';
+const SearchBar = () => {
+  const bookContext = useContext(MyContext);
   const findWithId = (id) => {
-    const found = allBooks.find((book) => book.id === id);
+    const found = bookContext.Books.find((book) => book.id === id);
     return found ? found.shelf : 'none';
   };
   const [search, setSearch] = useState('');
@@ -63,7 +64,7 @@ const SearchBar = ({ theBookState, allBooks }) => {
                     <div className='book-shelf-changer'>
                       <select
                         defaultValue={findWithId(book.id)}
-                        onChange={(e) => theBookState(e, book)}
+                        onChange={(e) => bookContext.changeBookState(e, book)}
                       >
                         <option value='move'>Move to...</option>
                         <option value='currentlyReading'>

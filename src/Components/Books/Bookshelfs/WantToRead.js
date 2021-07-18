@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Spinner from '../../Spinner';
+import MyContext from '../../../Context/MyContext';
 
-const WantToRead = ({ books, loading, theBookState }) => {
+const WantToRead = () => {
+  const bookContext = useContext(MyContext);
+  const wantToReadBooks = bookContext.Books.filter(
+    (book) => book.shelf === 'wantToRead'
+  );
   return (
     <div className='bookshelf'>
       <h2 className='bookshelf-title'>Want to Read</h2>
       <div className='bookshelf-books'>
-        {loading ? (
+        {bookContext.loading ? (
           <Spinner />
         ) : (
           <ol className='books-grid'>
-            {books.map((book) => (
+            {wantToReadBooks.map((book) => (
               <li key={book.id}>
                 <div className='book'>
                   <div className='book-top'>
@@ -27,7 +32,7 @@ const WantToRead = ({ books, loading, theBookState }) => {
                     <div className='book-shelf-changer'>
                       <select
                         defaultValue='wantToRead'
-                        onChange={(e) => theBookState(e, book)}
+                        onChange={(e) => bookContext.changeBookState(e, book)}
                       >
                         <option value='move' disabled>
                           Move to...
@@ -53,4 +58,4 @@ const WantToRead = ({ books, loading, theBookState }) => {
   );
 };
 
-export default WantToRead;
+export default React.memo(WantToRead);

@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Spinner from '../../Spinner';
-const CurrentlyReading = ({ books, loading, theBookState }) => {
+import MyContext from '../../../Context/MyContext';
+
+const CurrentlyReading = ({ books }) => {
+  const bookContext = useContext(MyContext);
+  const curntBooks = bookContext.Books.filter(
+    (book) => book.shelf === 'currentlyReading'
+  );
   return (
     <div className='bookshelf'>
       <h2 className='bookshelf-title'>Currently Reading</h2>
       <div className='bookshelf-books'>
-        {loading ? (
+        {bookContext.loading ? (
           <Spinner />
         ) : (
           <ol className='books-grid'>
-            {books.map((book) => (
+            {curntBooks.map((book) => (
               <li key={book.id}>
                 <div className='book'>
                   <div className='book-top'>
@@ -26,7 +32,7 @@ const CurrentlyReading = ({ books, loading, theBookState }) => {
                     <div className='book-shelf-changer'>
                       <select
                         defaultValue='currentlyReading'
-                        onChange={(e) => theBookState(e, book)}
+                        onChange={(e) => bookContext.changeBookState(e, book)}
                       >
                         <option value='move' disabled>
                           Move to...

@@ -9,8 +9,5 @@ const reducer = (state, action) => {
       return state;
   }
 };
-const initialState = {
-  Books: [],
-  loading: false
-};
+
 export default reducer;
